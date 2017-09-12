@@ -1,0 +1,55 @@
+group 'clouway'
+
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+mainClassName = 'com.clouway.MyClass'
+
+sourceCompatibility = 1.8
+
+jar.enabled = false
+
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.1'
+    }
+}
+
+shadowJar {
+    baseName = 'GradleProject'
+    classifier = null
+    version = null
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group:"log4j", name:"log4j", version:"1.2.17"
+}
+
+jar {
+    manifest {
+        attributes(
+                'Class-Path': configurations.compile.collect{it.getName()}.join(''),
+                'Main-Class': 'com.clouway.MyClass'
+        )
+    }
+}
+task copyLibs(type: Copy, dependsOn: build) {
+    from configurations.compile
+    into 'build/libs'
+    println 'Done!'
+}
+task printStatus{
+    doLast{
+        println 'All libraries are copied!'
+    }
+}
+printStatus.shouldRunAfter copyLibs

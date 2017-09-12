@@ -1,3 +1,6 @@
+package com.clouway;
+
+
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
@@ -8,8 +11,10 @@ public class MyClass{
     public static void main(String argv[]) {
         BasicConfigurator.configure();
         logger.debug("Hello world.");
-        logger.info("Business layer.");
-        System.out.println("Business layer");
+        logger.info("What a beatiful day.");
+
+        Dog dog = new Dog("Rex");
+        dog.bark();
     }
 
 }
